@@ -557,23 +557,28 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
               <NumInput value={character.dinheiro} onChange={(v) => onChange({ dinheiro: v })} min={0} />
             </div>
           </div>
+          {equipamento.itens.length > 0 && (
+            <div className="mt-1 mb-1 grid grid-cols-[1fr_3.5rem_1.5rem] gap-2 text-[10px] font-medium uppercase text-slate-500">
+              <span>Item</span>
+              <span className="text-center">Slots</span>
+              <span></span>
+            </div>
+          )}
           {equipamento.itens.map((item, i) => (
-            <div key={i} className="mt-1.5 flex gap-2">
+            <div key={i} className="mt-1.5 grid grid-cols-[1fr_3.5rem_1.5rem] gap-2 items-center">
               <TextInput
                 value={item.nome}
                 onChange={(v) => setItem(i, 'nome', v)}
                 placeholder="Item"
-                className="flex-1"
               />
               <NumInput
                 value={item.qtdSlots}
                 onChange={(v) => setItem(i, 'qtdSlots', v)}
-                className="w-14"
                 min={0}
               />
               <button
                 onClick={() => removeItem(i)}
-                className="rounded px-2 text-xs text-red-400 hover:bg-red-400/10"
+                className="rounded px-1 text-xs text-red-400 hover:bg-red-400/10"
               >
                 &times;
               </button>
