@@ -45,8 +45,22 @@ export default function CharacterCard({ character }: { character: Character }) {
       className="group flex flex-col overflow-hidden rounded-xl border-2 border-slate-700 bg-slate-800 transition-all hover:border-amber-500/60 hover:shadow-lg hover:shadow-amber-500/10"
     >
       {/* Avatar area */}
-      <div className={`flex h-32 items-center justify-center bg-gradient-to-br ${colorForId(character.id)}`}>
-        <span className="text-4xl font-extrabold text-white/90 drop-shadow">{getInitials(nome)}</span>
+      <div className={`relative flex h-32 items-center justify-center bg-gradient-to-br ${colorForId(character.id)}`}>
+        {character.imagemUrl ? (
+          /* eslint-disable-next-line @next/next/no-img-element */
+          <img
+            src={character.imagemUrl}
+            alt={nome}
+            className="absolute inset-0 h-full w-full object-cover"
+            onError={(e) => {
+              (e.target as HTMLImageElement).style.display = 'none';
+              (e.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden');
+            }}
+          />
+        ) : null}
+        <span className={`text-4xl font-extrabold text-white/90 drop-shadow ${character.imagemUrl ? 'hidden' : ''}`}>
+          {getInitials(nome)}
+        </span>
       </div>
       {/* Info */}
       <div className="flex flex-1 flex-col gap-1.5 p-3">

@@ -107,6 +107,9 @@ export interface Character {
   carga: { limite: number; usada: number };
   dinheiro: number;
 
+  // Character portrait
+  imagemUrl: string;
+
   // I) Text fields (page 2)
   descricao: string;
   habilidades: {
@@ -239,6 +242,8 @@ export function createDefaultCharacter(): Character {
     tesouros: '',
     carga: { limite: 10, usada: 0 },
     dinheiro: 0,
+
+    imagemUrl: '',
 
     descricao: '',
     habilidades: {
