@@ -8,6 +8,7 @@ import { recalculate } from '@/app/lib/compute';
 import { getCharacter, saveCharacter, deleteCharacter, duplicateCharacter } from '@/app/lib/storage';
 import { exportCharacterToJson, importCharacterFromJson } from '@/app/lib/importExport';
 import ConfirmDialog from '@/app/components/ConfirmDialog';
+import DiceRoller, { DiceRollerToggle } from '@/app/components/DiceRoller';
 import FichaTab from '@/app/components/editor/FichaTab';
 import DetalhesTab from '@/app/components/editor/DetalhesTab';
 import MagiasTab from '@/app/components/editor/MagiasTab';
@@ -46,6 +47,7 @@ export default function CharacterEditorPage() {
   const [tab, setTab] = useState<TabKey>('ficha');
   const [mounted, setMounted] = useState(false);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [showDiceRoller, setShowDiceRoller] = useState(false);
   const [saveStatus, setSaveStatus] = useState<'saved' | 'saving' | 'idle'>('idle');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -152,7 +154,7 @@ export default function CharacterEditorPage() {
   const nivelTotal = character.personagem.classes.reduce((s, c) => s + (c.nivel || 0), 0);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-6">
+    <div className={`mx-auto max-w-7xl px-4 py-6 ${showDiceRoller ? 'sm:mr-96' : ''} transition-all`}>
       {/* Top bar */}
       <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
@@ -248,6 +250,10 @@ export default function CharacterEditorPage() {
         onCancel={() => setShowDeleteDialog(false)}
         danger
       />
+
+      {/* Dice Roller */}
+      <DiceRoller open={showDiceRoller} onClose={() => setShowDiceRoller(false)} />
+      {!showDiceRoller && <DiceRollerToggle onClick={() => setShowDiceRoller(true)} />}
     </div>
   );
 }

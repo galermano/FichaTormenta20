@@ -1,7 +1,10 @@
 'use client';
 
+import { useState } from 'react';
 import type { Character, AtributoEnum } from '@/app/lib/schema';
 import { ATRIBUTOS_LIST, ATRIBUTO_NAMES, TAMANHOS, PERICIAS_DEFAULT } from '@/app/lib/schema';
+import { generateAttributes, buildSkillCheckExpr, buildAttackRollExpr, type AttrGenResult } from '@/app/lib/dice';
+import DiceButton from '@/app/components/DiceButton';
 import SectionCard from './SectionCard';
 
 interface FichaTabProps {
@@ -59,8 +62,111 @@ function Label({ children, className = '' }: { children: React.ReactNode; classN
   return <label className={`block text-[11px] font-medium uppercase tracking-wide text-slate-400 ${className}`}>{children}</label>;
 }
 
+// ---- Attribute Generation Modal ----
+function AttrGenModal({
+  open,
+  onClose,
+  onApply,
+}: {
+  open: boolean;
+  onClose: () => void;
+  onApply: (values: number[]) => void;
+}) {
+  const [results, setResults] = useState<AttrGenResult[] | null>(null);
+
+  const handleRoll = () => {
+    setResults(generateAttributes());
+  };
+
+  const handleApply = () => {
+    if (!results) return;
+    onApply(results.map((r) => r.total));
+    onClose();
+    setResults(null);
+  };
+
+  if (!open) return null;
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm">
+      <div className="mx-4 w-full max-w-md rounded-xl border border-slate-700 bg-slate-800 p-6 shadow-2xl">
+        <h3 className="text-lg font-bold text-white">Gerar Atributos</h3>
+        <p className="mt-1 text-xs text-slate-400">
+          Método: <strong className="text-amber-400">4d6</strong> descartando o menor dado para cada atributo (padrão Tormenta20).
+        </p>
+
+        <div className="mt-4 flex justify-center">
+          <button
+            onClick={handleRoll}
+            className="rounded-lg bg-amber-600 px-6 py-2.5 text-sm font-bold text-white transition-colors hover:bg-amber-500"
+          >
+            {results ? 'Rolar Novamente' : 'Rolar 4d6 (6x)'}
+          </button>
+        </div>
+
+        {results && (
+          <div className="mt-5 space-y-2">
+            {ATRIBUTOS_LIST.map((attr, i) => {
+              const r = results[i];
+              return (
+                <div key={attr} className="flex items-center gap-3 rounded-lg border border-slate-700 bg-slate-900/60 px-3 py-2">
+                  <div className="w-12">
+                    <span className="text-xs font-bold text-amber-400">{attr}</span>
+                    <p className="text-[9px] text-slate-500">{ATRIBUTO_NAMES[attr]}</p>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    {r.dice.map((d, di) => {
+                      const isDropped = d === r.dropped && di === r.dice.indexOf(r.dropped);
+                      // Find the first occurrence of the dropped die
+                      const droppedIdx = r.dice.indexOf(r.dropped);
+                      const isThisDropped = d === r.dropped && di === droppedIdx;
+                      return (
+                        <span
+                          key={di}
+                          className={`inline-flex h-7 w-7 items-center justify-center rounded text-xs font-semibold ${
+                            isThisDropped
+                              ? 'bg-red-500/20 text-red-400 line-through'
+                              : 'bg-slate-700 text-slate-200'
+                          }`}
+                        >
+                          {d}
+                        </span>
+                      );
+                    })}
+                  </div>
+                  <span className="ml-auto text-lg font-extrabold text-white">{r.total}</span>
+                </div>
+              );
+            })}
+            <p className="text-center text-[10px] text-slate-500">
+              Total: {results.reduce((s, r) => s + r.total, 0)} pontos
+            </p>
+          </div>
+        )}
+
+        <div className="mt-6 flex justify-end gap-3">
+          <button
+            onClick={() => { onClose(); setResults(null); }}
+            className="rounded-lg border border-slate-600 px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-700"
+          >
+            Cancelar
+          </button>
+          <button
+            onClick={handleApply}
+            disabled={!results}
+            className="rounded-lg bg-amber-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-amber-500 disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            Aplicar na Ficha
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function FichaTab({ character, onChange, onDeep }: FichaTabProps) {
   const { personagem, atributos, pv, pm, defesa, pericias, ataques, equipamento } = character;
+  const [showAttrGen, setShowAttrGen] = useState(false);
 
   // -- Helpers to update nested objects --
   const setPersonagem = (field: string, value: unknown) => {
@@ -92,6 +198,13 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
 
   const setPericia = (nome: string, field: string, value: unknown) => {
     onDeep(`pericias.${nome}.${field}`, value);
+  };
+
+  // Apply generated attributes
+  const handleApplyGenerated = (values: number[]) => {
+    ATRIBUTOS_LIST.forEach((attr, i) => {
+      onDeep(`atributos.${attr}.valorBase`, values[i]);
+    });
   };
 
   // -- Attacks --
@@ -200,6 +313,22 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
 
         {/* Attributes */}
         <SectionCard title="Atributos">
+          <div className="mb-3 flex items-center justify-end">
+            <button
+              onClick={() => setShowAttrGen(true)}
+              className="flex items-center gap-1.5 rounded-lg border border-amber-500/40 bg-amber-500/10 px-3 py-1.5 text-xs font-semibold text-amber-400 transition-colors hover:bg-amber-500/20"
+            >
+              <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                <rect x="2" y="2" width="20" height="20" rx="3" />
+                <circle cx="8" cy="8" r="1.2" fill="currentColor" stroke="none" />
+                <circle cx="16" cy="8" r="1.2" fill="currentColor" stroke="none" />
+                <circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none" />
+                <circle cx="8" cy="16" r="1.2" fill="currentColor" stroke="none" />
+                <circle cx="16" cy="16" r="1.2" fill="currentColor" stroke="none" />
+              </svg>
+              Rolar 4d6 (Gerar Atributos)
+            </button>
+          </div>
           <div className="grid grid-cols-3 gap-3 sm:grid-cols-6">
             {ATRIBUTOS_LIST.map((attr) => (
               <div key={attr} className="text-center">
@@ -210,8 +339,12 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
                   onChange={(v) => setAtributo(attr, v)}
                   className="mt-1 text-center"
                 />
-                <div className="mt-1 flex h-8 items-center justify-center rounded bg-slate-700 text-sm font-bold text-amber-400">
-                  {atributos[attr].modificador >= 0 ? '+' : ''}{atributos[attr].modificador}
+                <div className="mt-1 flex h-8 items-center justify-center gap-1 rounded bg-slate-700 text-sm font-bold text-amber-400">
+                  <span>{atributos[attr].modificador >= 0 ? '+' : ''}{atributos[attr].modificador}</span>
+                  <DiceButton
+                    expression={`1d20${atributos[attr].modificador >= 0 ? '+' : ''}${atributos[attr].modificador}`}
+                    label={`Teste de ${ATRIBUTO_NAMES[attr]}`}
+                  />
                 </div>
               </div>
             ))}
@@ -312,11 +445,27 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
                 </div>
                 <div>
                   <Label>Teste Ataque</Label>
-                  <TextInput value={atk.bonusTesteAtaque} onChange={(v) => setAtaque(i, 'bonusTesteAtaque', v)} />
+                  <div className="flex gap-1">
+                    <TextInput value={atk.bonusTesteAtaque} onChange={(v) => setAtaque(i, 'bonusTesteAtaque', v)} className="flex-1" />
+                    <DiceButton
+                      expression={buildAttackRollExpr(atk.bonusTesteAtaque)}
+                      label={`${atk.nome || 'Ataque'} - Teste`}
+                      size="sm"
+                    />
+                  </div>
                 </div>
                 <div>
                   <Label>Dano</Label>
-                  <TextInput value={atk.dano} onChange={(v) => setAtaque(i, 'dano', v)} />
+                  <div className="flex gap-1">
+                    <TextInput value={atk.dano} onChange={(v) => setAtaque(i, 'dano', v)} className="flex-1" />
+                    {atk.dano && (
+                      <DiceButton
+                        expression={atk.dano}
+                        label={`${atk.nome || 'Ataque'} - Dano`}
+                        size="sm"
+                      />
+                    )}
+                  </div>
                 </div>
                 <div>
                   <Label>Crítico</Label>
@@ -350,18 +499,19 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
         {/* Skills */}
         <SectionCard title="Perícias">
           <div className="max-h-[600px] overflow-y-auto pr-1">
-            <div className="mb-1 grid grid-cols-[1fr_auto_auto_auto_auto] gap-x-2 text-[10px] font-medium uppercase text-slate-500">
+            <div className="mb-1 grid grid-cols-[1fr_auto_auto_auto_auto_auto] gap-x-2 text-[10px] font-medium uppercase text-slate-500">
               <span>Perícia</span>
               <span className="w-8 text-center">Tr</span>
               <span className="w-10 text-center">Attr</span>
               <span className="w-12 text-center">Out</span>
               <span className="w-10 text-center">Tot</span>
+              <span className="w-5"></span>
             </div>
             {PERICIAS_DEFAULT.map(({ nome }) => {
               const p = pericias[nome];
               if (!p) return null;
               return (
-                <div key={nome} className="grid grid-cols-[1fr_auto_auto_auto_auto] items-center gap-x-2 border-t border-slate-700/50 py-1">
+                <div key={nome} className="grid grid-cols-[1fr_auto_auto_auto_auto_auto] items-center gap-x-2 border-t border-slate-700/50 py-1">
                   <span className="truncate text-xs text-slate-300">{nome}</span>
                   <input
                     type="checkbox"
@@ -379,6 +529,10 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
                   <span className={`w-10 text-center text-xs font-semibold ${p.total >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
                     {p.total >= 0 ? '+' : ''}{p.total}
                   </span>
+                  <DiceButton
+                    expression={buildSkillCheckExpr(p.total)}
+                    label={nome}
+                  />
                 </div>
               );
             })}
@@ -441,6 +595,13 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
           />
         </SectionCard>
       </div>
+
+      {/* Attribute Generation Modal */}
+      <AttrGenModal
+        open={showAttrGen}
+        onClose={() => setShowAttrGen(false)}
+        onApply={handleApplyGenerated}
+      />
     </div>
   );
 }
