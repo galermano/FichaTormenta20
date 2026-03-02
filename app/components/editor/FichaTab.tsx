@@ -309,6 +309,29 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
               + Adicionar classe
             </button>
           </div>
+          {/* Character Portrait */}
+          <div className="mt-3">
+            <Label>Imagem do Personagem (URL)</Label>
+            <div className="mt-1 flex gap-3 items-start">
+              <TextInput
+                value={character.imagemUrl}
+                onChange={(v) => onChange({ imagemUrl: v })}
+                placeholder="https://exemplo.com/imagem.png"
+                className="flex-1"
+              />
+              {character.imagemUrl && (
+                <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border border-slate-600">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={character.imagemUrl}
+                    alt="Retrato do personagem"
+                    className="h-full w-full object-cover"
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
         </SectionCard>
 
         {/* Attributes */}
