@@ -245,6 +245,37 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
       <div className="flex flex-col gap-4">
         {/* Identity */}
         <SectionCard title="Identidade">
+          {/* Character Portrait - Profile Style */}
+          <div className="mb-4 flex flex-col items-center">
+            <div className="relative h-28 w-28 overflow-hidden rounded-full border-2 border-amber-500/60 bg-slate-800 shadow-lg shadow-amber-500/10">
+              {character.imagemUrl ? (
+                <>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={character.imagemUrl}
+                    alt="Retrato do personagem"
+                    className="h-full w-full object-cover"
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                  />
+                </>
+              ) : (
+                <div className="flex h-full w-full items-center justify-center text-slate-500">
+                  <svg className="h-12 w-12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
+                </div>
+              )}
+            </div>
+            <div className="mt-2 w-full max-w-xs">
+              <TextInput
+                value={character.imagemUrl}
+                onChange={(v) => onChange({ imagemUrl: v })}
+                placeholder="URL da imagem do personagem"
+                className="text-center text-xs"
+              />
+            </div>
+          </div>
           <div className="grid gap-3 sm:grid-cols-2">
             <div>
               <Label>Nome do Personagem</Label>
@@ -308,29 +339,6 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
             >
               + Adicionar classe
             </button>
-          </div>
-          {/* Character Portrait */}
-          <div className="mt-3">
-            <Label>Imagem do Personagem (URL)</Label>
-            <div className="mt-1 flex gap-3 items-start">
-              <TextInput
-                value={character.imagemUrl}
-                onChange={(v) => onChange({ imagemUrl: v })}
-                placeholder="https://exemplo.com/imagem.png"
-                className="flex-1"
-              />
-              {character.imagemUrl && (
-                <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-lg border border-slate-600">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={character.imagemUrl}
-                    alt="Retrato do personagem"
-                    className="h-full w-full object-cover"
-                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                  />
-                </div>
-              )}
-            </div>
           </div>
         </SectionCard>
 
