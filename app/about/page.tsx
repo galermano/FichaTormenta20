@@ -4,7 +4,7 @@ export default function AboutPage() {
       <h1 className="text-3xl font-extrabold text-white">Sobre o T20 Sheet</h1>
       <div className="mt-6 space-y-4 text-sm leading-relaxed text-slate-300">
         <p>
-          O <strong className="text-amber-400">T20 Sheet</strong> é um gerenciador de fichas de personagem para o RPG{' '}
+          O <strong className="text-accent-400">T20 Sheet</strong> é um gerenciador de fichas de personagem para o RPG{' '}
           <strong>Tormenta20</strong>. Totalmente gratuito, sem login e funciona offline.
         </p>
         <p>

@@ -1,8 +1,21 @@
 @import "tailwindcss";
 
+:root {
+  --accent-300: #fcd34d;
+  --accent-400: #fbbf24;
+  --accent-500: #f59e0b;
+  --accent-600: #d97706;
+  --accent-700: #b45309;
+}
+
 @theme inline {
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-accent-300: var(--accent-300);
+  --color-accent-400: var(--accent-400);
+  --color-accent-500: var(--accent-500);
+  --color-accent-600: var(--accent-600);
+  --color-accent-700: var(--accent-700);
 }
 
 body {
@@ -44,6 +57,7 @@ input[type="number"] {
 /* Checkbox custom */
 input[type="checkbox"] {
   cursor: pointer;
+  accent-color: var(--accent-500);
 }
 
 /* Dice roll pop animation */

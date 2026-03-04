@@ -39,7 +39,7 @@ export default function DiceButton({ expression, label, size = 'xs', className =
         type="button"
         onClick={handleClick}
         title={`Rolar ${expression}${label ? ` (${label})` : ''}`}
-        className={`inline-flex items-center justify-center rounded border border-slate-600 bg-slate-800 font-bold text-amber-400 transition-all hover:border-amber-500 hover:bg-slate-700 active:scale-90 ${sizeClasses}`}
+        className={`inline-flex items-center justify-center rounded border border-slate-600 bg-slate-800 font-bold text-accent-400 transition-all hover:border-accent-500 hover:bg-slate-700 active:scale-90 ${sizeClasses}`}
       >
         <svg className={size === 'sm' ? 'h-3.5 w-3.5' : 'h-3 w-3'} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
           <rect x="2" y="2" width="20" height="20" rx="3" />
@@ -52,7 +52,7 @@ export default function DiceButton({ expression, label, size = 'xs', className =
         <span
           className={`absolute bottom-full left-1/2 z-50 mb-1 -translate-x-1/2 whitespace-nowrap rounded-lg px-2.5 py-1.5 text-xs font-bold shadow-lg ${
             result.isCritical
-              ? 'bg-amber-500 text-slate-900'
+              ? 'bg-accent-500 text-slate-900'
               : result.isFumble
                 ? 'bg-red-600 text-white'
                 : 'bg-slate-700 text-white'

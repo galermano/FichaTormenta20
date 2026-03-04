@@ -31,7 +31,7 @@ function NumInput({
       value={value}
       min={min}
       onChange={(e) => onChange(e.target.value === '' ? 0 : Number(e.target.value))}
-      className={`w-full rounded border border-slate-600 bg-slate-900 px-2 py-1 text-sm text-white outline-none focus:border-amber-500 ${className}`}
+      className={`w-full rounded border border-slate-600 bg-slate-900 px-2 py-1 text-sm text-white outline-none focus:border-accent-500 ${className}`}
     />
   );
 }
@@ -53,7 +53,7 @@ function TextInput({
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
-      className={`w-full rounded border border-slate-600 bg-slate-900 px-2 py-1.5 text-sm text-white placeholder-slate-500 outline-none focus:border-amber-500 ${className}`}
+      className={`w-full rounded border border-slate-600 bg-slate-900 px-2 py-1.5 text-sm text-white placeholder-slate-500 outline-none focus:border-accent-500 ${className}`}
     />
   );
 }
@@ -92,13 +92,13 @@ function AttrGenModal({
       <div className="mx-4 w-full max-w-md rounded-xl border border-slate-700 bg-slate-800 p-6 shadow-2xl">
         <h3 className="text-lg font-bold text-white">Gerar Atributos</h3>
         <p className="mt-1 text-xs text-slate-400">
-          Método: <strong className="text-amber-400">4d6</strong> descartando o menor dado para cada atributo (padrão Tormenta20).
+          Método: <strong className="text-accent-400">4d6</strong> descartando o menor dado para cada atributo (padrão Tormenta20).
         </p>
 
         <div className="mt-4 flex justify-center">
           <button
             onClick={handleRoll}
-            className="rounded-lg bg-amber-600 px-6 py-2.5 text-sm font-bold text-white transition-colors hover:bg-amber-500"
+            className="rounded-lg bg-accent-600 px-6 py-2.5 text-sm font-bold text-white transition-colors hover:bg-accent-500"
           >
             {results ? 'Rolar Novamente' : 'Rolar 4d6 (6x)'}
           </button>
@@ -111,7 +111,7 @@ function AttrGenModal({
               return (
                 <div key={attr} className="flex items-center gap-3 rounded-lg border border-slate-700 bg-slate-900/60 px-3 py-2">
                   <div className="w-12">
-                    <span className="text-xs font-bold text-amber-400">{attr}</span>
+                    <span className="text-xs font-bold text-accent-400">{attr}</span>
                     <p className="text-[9px] text-slate-500">{ATRIBUTO_NAMES[attr]}</p>
                   </div>
                   <div className="flex items-center gap-1">
@@ -154,7 +154,7 @@ function AttrGenModal({
           <button
             onClick={handleApply}
             disabled={!results}
-            className="rounded-lg bg-amber-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-amber-500 disabled:cursor-not-allowed disabled:opacity-40"
+            className="rounded-lg bg-accent-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-accent-500 disabled:cursor-not-allowed disabled:opacity-40"
           >
             Aplicar na Ficha
           </button>
@@ -247,7 +247,7 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
         <SectionCard title="Identidade">
           {/* Character Portrait - Profile Style */}
           <div className="mb-4 flex flex-col items-center">
-            <div className="relative h-28 w-28 overflow-hidden rounded-full border-2 border-amber-500/60 bg-slate-800 shadow-lg shadow-amber-500/10">
+            <div className="relative h-28 w-28 overflow-hidden rounded-full border-2 border-accent-500/60 bg-slate-800 shadow-lg shadow-accent-500/10">
               {character.imagemUrl ? (
                 <>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -302,7 +302,7 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
               <select
                 value={character.tamanho}
                 onChange={(e) => onChange({ tamanho: e.target.value as Character['tamanho'] })}
-                className="w-full rounded border border-slate-600 bg-slate-900 px-2 py-1.5 text-sm text-white outline-none focus:border-amber-500"
+                className="w-full rounded border border-slate-600 bg-slate-900 px-2 py-1.5 text-sm text-white outline-none focus:border-accent-500"
               >
                 {TAMANHOS.map((t) => (
                   <option key={t} value={t}>{t}</option>
@@ -335,7 +335,7 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
             ))}
             <button
               onClick={addClasse}
-              className="mt-2 text-xs font-medium text-amber-400 hover:text-amber-300"
+              className="mt-2 text-xs font-medium text-accent-400 hover:text-accent-300"
             >
               + Adicionar classe
             </button>
@@ -347,7 +347,7 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
           <div className="mb-3 flex items-center justify-end">
             <button
               onClick={() => setShowAttrGen(true)}
-              className="flex items-center gap-1.5 rounded-lg border border-amber-500/40 bg-amber-500/10 px-3 py-1.5 text-xs font-semibold text-amber-400 transition-colors hover:bg-amber-500/20"
+              className="flex items-center gap-1.5 rounded-lg border border-accent-500/40 bg-accent-500/10 px-3 py-1.5 text-xs font-semibold text-accent-400 transition-colors hover:bg-accent-500/20"
             >
               <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
                 <rect x="2" y="2" width="20" height="20" rx="3" />
@@ -370,7 +370,7 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
                   onChange={(v) => setAtributo(attr, v)}
                   className="mt-1 text-center"
                 />
-                <div className="mt-1 flex h-8 items-center justify-center gap-1 rounded bg-slate-700 text-sm font-bold text-amber-400">
+                <div className="mt-1 flex h-8 items-center justify-center gap-1 rounded bg-slate-700 text-sm font-bold text-accent-400">
                   <span>{atributos[attr].modificador >= 0 ? '+' : ''}{atributos[attr].modificador}</span>
                   <DiceButton
                     expression={`1d20${atributos[attr].modificador >= 0 ? '+' : ''}${atributos[attr].modificador}`}
@@ -424,7 +424,7 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
               <select
                 value={defesa.atributoDefesa}
                 onChange={(e) => setDefesa('atributoDefesa', e.target.value)}
-                className="w-full rounded border border-slate-600 bg-slate-900 px-2 py-1 text-sm text-white outline-none focus:border-amber-500"
+                className="w-full rounded border border-slate-600 bg-slate-900 px-2 py-1 text-sm text-white outline-none focus:border-accent-500"
               >
                 {ATRIBUTOS_LIST.map((a) => (
                   <option key={a} value={a}>{a}</option>
@@ -455,7 +455,7 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
             </div>
             <div>
               <Label>Total</Label>
-              <div className="flex h-[30px] items-center justify-center rounded bg-amber-500/20 px-2 text-lg font-bold text-amber-400">
+              <div className="flex h-[30px] items-center justify-center rounded bg-accent-500/20 px-2 text-lg font-bold text-accent-400">
                 {defesa.total}
               </div>
             </div>
@@ -519,7 +519,7 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
               </button>
             </div>
           ))}
-          <button onClick={addAtaque} className="text-xs font-medium text-amber-400 hover:text-amber-300">
+          <button onClick={addAtaque} className="text-xs font-medium text-accent-400 hover:text-accent-300">
             + Adicionar ataque
           </button>
         </SectionCard>
@@ -548,14 +548,14 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
                     type="checkbox"
                     checked={p.treinado}
                     onChange={(e) => setPericia(nome, 'treinado', e.target.checked)}
-                    className="h-3.5 w-8 accent-amber-500"
+                    className="h-3.5 w-8"
                   />
                   <span className="w-10 text-center text-xs text-slate-400">{p.atributo}</span>
                   <input
                     type="number"
                     value={p.outros}
                     onChange={(e) => setPericia(nome, 'outros', e.target.value === '' ? 0 : Number(e.target.value))}
-                    className="w-12 rounded border border-slate-600 bg-slate-900 px-1 py-0.5 text-center text-xs text-white outline-none focus:border-amber-500"
+                    className="w-12 rounded border border-slate-600 bg-slate-900 px-1 py-0.5 text-center text-xs text-white outline-none focus:border-accent-500"
                   />
                   <span className={`w-10 text-center text-xs font-semibold ${p.total >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
                     {p.total >= 0 ? '+' : ''}{p.total}
@@ -615,7 +615,7 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
               </button>
             </div>
           ))}
-          <button onClick={addItem} className="mt-2 text-xs font-medium text-amber-400 hover:text-amber-300">
+          <button onClick={addItem} className="mt-2 text-xs font-medium text-accent-400 hover:text-accent-300">
             + Adicionar item
           </button>
         </SectionCard>
@@ -626,7 +626,7 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
             value={character.proficienciasECaracteristicas}
             onChange={(e) => onChange({ proficienciasECaracteristicas: e.target.value })}
             rows={5}
-            className="w-full resize-y rounded border border-slate-600 bg-slate-900 px-2 py-1.5 text-sm text-white placeholder-slate-500 outline-none focus:border-amber-500"
+            className="w-full resize-y rounded border border-slate-600 bg-slate-900 px-2 py-1.5 text-sm text-white placeholder-slate-500 outline-none focus:border-accent-500"
             placeholder="Proficiências com armas, armaduras, características de raça, classe..."
           />
         </SectionCard>
