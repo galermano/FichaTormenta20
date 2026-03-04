@@ -15,8 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "T20 Sheet - Ficha de Personagem Tormenta20",
-  description: "Crie, edite e exporte fichas de personagem para Tormenta20. Sem login, funciona offline.",
+  title: "Galer20 - Ficha de Personagem para Tormenta20",
+  description:
+    "Crie, edite e exporte fichas de personagem para Tormenta20. Sem login, funciona offline.",
 };
 
 export default function RootLayout({
@@ -31,9 +32,7 @@ export default function RootLayout({
       >
         <ThemeProvider>
           <Header />
-          <main className="min-h-[calc(100vh-3.5rem)]">
-            {children}
-          </main>
+          <main className="min-h-[calc(100vh-3.5rem)]">{children}</main>
         </ThemeProvider>
       </body>
     </html>
