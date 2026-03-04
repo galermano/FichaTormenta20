@@ -1,11 +1,21 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import type { Character, AtributoEnum } from '@/app/lib/schema';
-import { ATRIBUTOS_LIST, ATRIBUTO_NAMES, TAMANHOS, PERICIAS_DEFAULT } from '@/app/lib/schema';
-import { generateAttributes, buildSkillCheckExpr, buildAttackRollExpr, type AttrGenResult } from '@/app/lib/dice';
-import DiceButton from '@/app/components/DiceButton';
-import SectionCard from './SectionCard';
+import { useState } from "react";
+import type { Character, AtributoEnum } from "@/app/lib/schema";
+import {
+  ATRIBUTOS_LIST,
+  ATRIBUTO_NAMES,
+  TAMANHOS,
+  PERICIAS_DEFAULT,
+} from "@/app/lib/schema";
+import {
+  generateAttributes,
+  buildSkillCheckExpr,
+  buildAttackRollExpr,
+  type AttrGenResult,
+} from "@/app/lib/dice";
+import DiceButton from "@/app/components/DiceButton";
+import SectionCard from "./SectionCard";
 
 interface FichaTabProps {
   character: Character;
@@ -17,7 +27,7 @@ interface FichaTabProps {
 function NumInput({
   value,
   onChange,
-  className = '',
+  className = "",
   min,
 }: {
   value: number;
@@ -30,7 +40,9 @@ function NumInput({
       type="number"
       value={value}
       min={min}
-      onChange={(e) => onChange(e.target.value === '' ? 0 : Number(e.target.value))}
+      onChange={(e) =>
+        onChange(e.target.value === "" ? 0 : Number(e.target.value))
+      }
       className={`w-full rounded border border-slate-600 bg-slate-900 px-2 py-1 text-sm text-white outline-none focus:border-accent-500 ${className}`}
     />
   );
@@ -40,7 +52,7 @@ function TextInput({
   value,
   onChange,
   placeholder,
-  className = '',
+  className = "",
 }: {
   value: string;
   onChange: (v: string) => void;
@@ -58,8 +70,20 @@ function TextInput({
   );
 }
 
-function Label({ children, className = '' }: { children: React.ReactNode; className?: string }) {
-  return <label className={`block text-[11px] font-medium uppercase tracking-wide text-slate-400 ${className}`}>{children}</label>;
+function Label({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <label
+      className={`block text-[11px] font-medium uppercase tracking-wide text-slate-400 ${className}`}
+    >
+      {children}
+    </label>
+  );
 }
 
 // ---- Attribute Generation Modal ----
@@ -92,7 +116,8 @@ function AttrGenModal({
       <div className="mx-4 w-full max-w-md rounded-xl border border-slate-700 bg-slate-800 p-6 shadow-2xl">
         <h3 className="text-lg font-bold text-white">Gerar Atributos</h3>
         <p className="mt-1 text-xs text-slate-400">
-          Método: <strong className="text-accent-400">4d6</strong> descartando o menor dado para cada atributo (padrão Tormenta20).
+          Método: <strong className="text-accent-400">4d6</strong> descartando o
+          menor dado para cada atributo (padrão Tormenta20).
         </p>
 
         <div className="mt-4 flex justify-center">
@@ -100,7 +125,7 @@ function AttrGenModal({
             onClick={handleRoll}
             className="rounded-lg bg-accent-600 px-6 py-2.5 text-sm font-bold text-white transition-colors hover:bg-accent-500"
           >
-            {results ? 'Rolar Novamente' : 'Rolar 4d6 (6x)'}
+            {results ? "Rolar Novamente" : "Rolar 4d6 (6x)"}
           </button>
         </div>
 
@@ -109,24 +134,33 @@ function AttrGenModal({
             {ATRIBUTOS_LIST.map((attr, i) => {
               const r = results[i];
               return (
-                <div key={attr} className="flex items-center gap-3 rounded-lg border border-slate-700 bg-slate-900/60 px-3 py-2">
+                <div
+                  key={attr}
+                  className="flex items-center gap-3 rounded-lg border border-slate-700 bg-slate-900/60 px-3 py-2"
+                >
                   <div className="w-12">
-                    <span className="text-xs font-bold text-accent-400">{attr}</span>
-                    <p className="text-[9px] text-slate-500">{ATRIBUTO_NAMES[attr]}</p>
+                    <span className="text-xs font-bold text-accent-400">
+                      {attr}
+                    </span>
+                    <p className="text-[9px] text-slate-500">
+                      {ATRIBUTO_NAMES[attr]}
+                    </p>
                   </div>
                   <div className="flex items-center gap-1">
                     {r.dice.map((d, di) => {
-                      const isDropped = d === r.dropped && di === r.dice.indexOf(r.dropped);
+                      const isDropped =
+                        d === r.dropped && di === r.dice.indexOf(r.dropped);
                       // Find the first occurrence of the dropped die
                       const droppedIdx = r.dice.indexOf(r.dropped);
-                      const isThisDropped = d === r.dropped && di === droppedIdx;
+                      const isThisDropped =
+                        d === r.dropped && di === droppedIdx;
                       return (
                         <span
                           key={di}
                           className={`inline-flex h-7 w-7 items-center justify-center rounded text-xs font-semibold ${
                             isThisDropped
-                              ? 'bg-red-500/20 text-red-400 line-through'
-                              : 'bg-slate-700 text-slate-200'
+                              ? "bg-red-500/20 text-red-400 line-through"
+                              : "bg-slate-700 text-slate-200"
                           }`}
                         >
                           {d}
@@ -134,7 +168,9 @@ function AttrGenModal({
                       );
                     })}
                   </div>
-                  <span className="ml-auto text-lg font-extrabold text-white">{r.total}</span>
+                  <span className="ml-auto text-lg font-extrabold text-white">
+                    {r.total}
+                  </span>
                 </div>
               );
             })}
@@ -146,7 +182,10 @@ function AttrGenModal({
 
         <div className="mt-6 flex justify-end gap-3">
           <button
-            onClick={() => { onClose(); setResults(null); }}
+            onClick={() => {
+              onClose();
+              setResults(null);
+            }}
             className="rounded-lg border border-slate-600 px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-700"
           >
             Cancelar
@@ -164,8 +203,21 @@ function AttrGenModal({
   );
 }
 
-export default function FichaTab({ character, onChange, onDeep }: FichaTabProps) {
-  const { personagem, atributos, pv, pm, defesa, pericias, ataques, equipamento } = character;
+export default function FichaTab({
+  character,
+  onChange,
+  onDeep,
+}: FichaTabProps) {
+  const {
+    personagem,
+    atributos,
+    pv,
+    pm,
+    defesa,
+    pericias,
+    ataques,
+    equipamento,
+  } = character;
   const [showAttrGen, setShowAttrGen] = useState(false);
 
   // -- Helpers to update nested objects --
@@ -176,16 +228,19 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
   const setClasse = (idx: number, field: string, value: unknown) => {
     const updated = [...personagem.classes];
     updated[idx] = { ...updated[idx], [field]: value };
-    setPersonagem('classes', updated);
+    setPersonagem("classes", updated);
   };
 
   const addClasse = () => {
-    setPersonagem('classes', [...personagem.classes, { nome: '', nivel: 1 }]);
+    setPersonagem("classes", [...personagem.classes, { nome: "", nivel: 1 }]);
   };
 
   const removeClasse = (idx: number) => {
     if (personagem.classes.length <= 1) return;
-    setPersonagem('classes', personagem.classes.filter((_, i) => i !== idx));
+    setPersonagem(
+      "classes",
+      personagem.classes.filter((_, i) => i !== idx),
+    );
   };
 
   const setAtributo = (attr: AtributoEnum, value: number) => {
@@ -210,7 +265,17 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
   // -- Attacks --
   const addAtaque = () => {
     onChange({
-      ataques: [...ataques, { nome: '', bonusTesteAtaque: '', dano: '', critico: '', tipo: '', alcance: '' }],
+      ataques: [
+        ...ataques,
+        {
+          nome: "",
+          bonusTesteAtaque: "",
+          dano: "",
+          critico: "",
+          tipo: "",
+          alcance: "",
+        },
+      ],
     });
   };
 
@@ -226,17 +291,23 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
 
   // -- Equipment --
   const addItem = () => {
-    onDeep('equipamento.itens', [...equipamento.itens, { nome: '', qtdSlots: 1 }]);
+    onDeep("equipamento.itens", [
+      ...equipamento.itens,
+      { nome: "", qtdSlots: 1 },
+    ]);
   };
 
   const setItem = (idx: number, field: string, value: unknown) => {
     const updated = [...equipamento.itens];
     updated[idx] = { ...updated[idx], [field]: value };
-    onDeep('equipamento.itens', updated);
+    onDeep("equipamento.itens", updated);
   };
 
   const removeItem = (idx: number) => {
-    onDeep('equipamento.itens', equipamento.itens.filter((_, i) => i !== idx));
+    onDeep(
+      "equipamento.itens",
+      equipamento.itens.filter((_, i) => i !== idx),
+    );
   };
 
   return (
@@ -255,12 +326,20 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
                     src={character.imagemUrl}
                     alt="Retrato do personagem"
                     className="h-full w-full object-cover"
-                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).style.display = "none";
+                    }}
                   />
                 </>
               ) : (
                 <div className="flex h-full w-full items-center justify-center text-slate-500">
-                  <svg className="h-12 w-12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5}>
+                  <svg
+                    className="h-12 w-12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={1.5}
+                  >
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
                     <circle cx="12" cy="7" r="4" />
                   </svg>
@@ -279,66 +358,119 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
           <div className="grid gap-3 sm:grid-cols-2">
             <div>
               <Label>Nome do Personagem</Label>
-              <TextInput value={personagem.nome} onChange={(v) => setPersonagem('nome', v)} placeholder="Nome" />
+              <TextInput
+                value={personagem.nome}
+                onChange={(v) => setPersonagem("nome", v)}
+                placeholder="Nome"
+              />
             </div>
             <div>
               <Label>Jogador</Label>
-              <TextInput value={personagem.jogador} onChange={(v) => setPersonagem('jogador', v)} placeholder="Jogador" />
+              <TextInput
+                value={personagem.jogador}
+                onChange={(v) => setPersonagem("jogador", v)}
+                placeholder="Jogador"
+              />
             </div>
             <div>
               <Label>Raça</Label>
-              <TextInput value={personagem.raca} onChange={(v) => setPersonagem('raca', v)} placeholder="Raça" />
+              <TextInput
+                value={personagem.raca}
+                onChange={(v) => setPersonagem("raca", v)}
+                placeholder="Raça"
+              />
             </div>
             <div>
               <Label>Origem</Label>
-              <TextInput value={personagem.origem} onChange={(v) => setPersonagem('origem', v)} placeholder="Origem" />
+              <TextInput
+                value={personagem.origem}
+                onChange={(v) => setPersonagem("origem", v)}
+                placeholder="Origem"
+              />
             </div>
             <div>
               <Label>Divindade</Label>
-              <TextInput value={personagem.divindade} onChange={(v) => setPersonagem('divindade', v)} placeholder="Divindade" />
+              <TextInput
+                value={personagem.divindade}
+                onChange={(v) => setPersonagem("divindade", v)}
+                placeholder="Divindade"
+              />
             </div>
             <div>
               <Label>Tamanho</Label>
               <select
                 value={character.tamanho}
-                onChange={(e) => onChange({ tamanho: e.target.value as Character['tamanho'] })}
+                onChange={(e) =>
+                  onChange({ tamanho: e.target.value as Character["tamanho"] })
+                }
                 className="w-full rounded border border-slate-600 bg-slate-900 px-2 py-1.5 text-sm text-white outline-none focus:border-accent-500"
               >
                 {TAMANHOS.map((t) => (
-                  <option key={t} value={t}>{t}</option>
+                  <option key={t} value={t}>
+                    {t}
+                  </option>
                 ))}
               </select>
             </div>
           </div>
           {/* Classes */}
-          <div className="mt-3">
-            <Label>Classes</Label>
+          <div className="mt-4">
+            <div className="mb-2 flex items-center justify-between">
+              <Label>Classes</Label>
+              <button
+                onClick={addClasse}
+                className="text-xs font-medium text-accent-400 hover:text-accent-300"
+              >
+                + Adicionar classe
+              </button>
+            </div>
+
+            {personagem.classes.length > 0 && (
+              <div className="mb-1 grid grid-cols-[1fr_4.5rem_1.5rem] gap-2 text-[10px] font-medium uppercase text-slate-500">
+                <span>Classe</span>
+                <span className="text-center">Nível</span>
+                <span></span>
+              </div>
+            )}
+
             {personagem.classes.map((cl, i) => (
-              <div key={i} className="mt-1.5 flex gap-2">
+              <div
+                key={i}
+                className="mt-1.5 grid grid-cols-[1fr_4.5rem_1.5rem] items-center gap-2"
+              >
                 <TextInput
                   value={cl.nome}
-                  onChange={(v) => setClasse(i, 'nome', v)}
-                  placeholder="Classe"
-                  className="flex-1"
+                  onChange={(v) => setClasse(i, "nome", v)}
+                  placeholder="Ex: Bardo"
                 />
-                <NumInput value={cl.nivel} onChange={(v) => setClasse(i, 'nivel', v)} className="w-16" min={1} />
-                {personagem.classes.length > 1 && (
-                  <button
-                    onClick={() => removeClasse(i)}
-                    className="rounded px-2 text-xs text-red-400 hover:bg-red-400/10"
-                    title="Remover classe"
-                  >
-                    &times;
-                  </button>
-                )}
+
+                <NumInput
+                  value={cl.nivel}
+                  onChange={(v) => setClasse(i, "nivel", v)}
+                  className="text-center"
+                  min={1}
+                />
+
+                <button
+                  onClick={() => removeClasse(i)}
+                  disabled={personagem.classes.length <= 1}
+                  className="rounded px-1 text-xs text-red-400 hover:bg-red-400/10 disabled:cursor-not-allowed disabled:opacity-40"
+                  title={
+                    personagem.classes.length <= 1
+                      ? "Mínimo 1 classe"
+                      : "Remover classe"
+                  }
+                >
+                  &times;
+                </button>
               </div>
             ))}
-            <button
-              onClick={addClasse}
-              className="mt-2 text-xs font-medium text-accent-400 hover:text-accent-300"
-            >
-              + Adicionar classe
-            </button>
+
+            {personagem.classes.length === 0 && (
+              <p className="text-xs text-slate-500">
+                Nenhuma classe adicionada.
+              </p>
+            )}
           </div>
         </SectionCard>
 
@@ -349,13 +481,49 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
               onClick={() => setShowAttrGen(true)}
               className="flex items-center gap-1.5 rounded-lg border border-accent-500/40 bg-accent-500/10 px-3 py-1.5 text-xs font-semibold text-accent-400 transition-colors hover:bg-accent-500/20"
             >
-              <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+              <svg
+                className="h-3.5 w-3.5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
                 <rect x="2" y="2" width="20" height="20" rx="3" />
-                <circle cx="8" cy="8" r="1.2" fill="currentColor" stroke="none" />
-                <circle cx="16" cy="8" r="1.2" fill="currentColor" stroke="none" />
-                <circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none" />
-                <circle cx="8" cy="16" r="1.2" fill="currentColor" stroke="none" />
-                <circle cx="16" cy="16" r="1.2" fill="currentColor" stroke="none" />
+                <circle
+                  cx="8"
+                  cy="8"
+                  r="1.2"
+                  fill="currentColor"
+                  stroke="none"
+                />
+                <circle
+                  cx="16"
+                  cy="8"
+                  r="1.2"
+                  fill="currentColor"
+                  stroke="none"
+                />
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="1.2"
+                  fill="currentColor"
+                  stroke="none"
+                />
+                <circle
+                  cx="8"
+                  cy="16"
+                  r="1.2"
+                  fill="currentColor"
+                  stroke="none"
+                />
+                <circle
+                  cx="16"
+                  cy="16"
+                  r="1.2"
+                  fill="currentColor"
+                  stroke="none"
+                />
               </svg>
               Rolar 4d6 (Gerar Atributos)
             </button>
@@ -364,16 +532,21 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
             {ATRIBUTOS_LIST.map((attr) => (
               <div key={attr} className="text-center">
                 <Label className="text-center">{attr}</Label>
-                <p className="text-[10px] text-slate-500">{ATRIBUTO_NAMES[attr]}</p>
+                <p className="text-[10px] text-slate-500">
+                  {ATRIBUTO_NAMES[attr]}
+                </p>
                 <NumInput
                   value={atributos[attr].valorBase}
                   onChange={(v) => setAtributo(attr, v)}
                   className="mt-1 text-center"
                 />
                 <div className="mt-1 flex h-8 items-center justify-center gap-1 rounded bg-slate-700 text-sm font-bold text-accent-400">
-                  <span>{atributos[attr].modificador >= 0 ? '+' : ''}{atributos[attr].modificador}</span>
+                  <span>
+                    {atributos[attr].modificador >= 0 ? "+" : ""}
+                    {atributos[attr].modificador}
+                  </span>
                   <DiceButton
-                    expression={`1d20${atributos[attr].modificador >= 0 ? '+' : ''}${atributos[attr].modificador}`}
+                    expression={`1d20${atributos[attr].modificador >= 0 ? "+" : ""}${atributos[attr].modificador}`}
                     label={`Teste de ${ATRIBUTO_NAMES[attr]}`}
                   />
                 </div>
@@ -387,27 +560,40 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             <div>
               <Label>PV Máx</Label>
-              <NumInput value={pv.max} onChange={(v) => onDeep('pv.max', v)} />
+              <NumInput value={pv.max} onChange={(v) => onDeep("pv.max", v)} />
             </div>
             <div>
               <Label>PV Atual</Label>
-              <NumInput value={pv.atual} onChange={(v) => onDeep('pv.atual', v)} />
+              <NumInput
+                value={pv.atual}
+                onChange={(v) => onDeep("pv.atual", v)}
+              />
             </div>
             <div>
               <Label>PM Máx</Label>
-              <NumInput value={pm.max} onChange={(v) => onDeep('pm.max', v)} />
+              <NumInput value={pm.max} onChange={(v) => onDeep("pm.max", v)} />
             </div>
             <div>
               <Label>PM Atual</Label>
-              <NumInput value={pm.atual} onChange={(v) => onDeep('pm.atual', v)} />
+              <NumInput
+                value={pm.atual}
+                onChange={(v) => onDeep("pm.atual", v)}
+              />
             </div>
             <div>
               <Label>Deslocamento</Label>
-              <NumInput value={character.deslocamento} onChange={(v) => onChange({ deslocamento: v })} />
+              <NumInput
+                value={character.deslocamento}
+                onChange={(v) => onChange({ deslocamento: v })}
+              />
             </div>
             <div>
               <Label>Experiência</Label>
-              <NumInput value={character.experiencia} onChange={(v) => onChange({ experiencia: v })} min={0} />
+              <NumInput
+                value={character.experiencia}
+                onChange={(v) => onChange({ experiencia: v })}
+                min={0}
+              />
             </div>
           </div>
         </SectionCard>
@@ -417,41 +603,59 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             <div>
               <Label>Base (CA)</Label>
-              <NumInput value={defesa.baseCA} onChange={(v) => setDefesa('baseCA', v)} />
+              <NumInput
+                value={defesa.baseCA}
+                onChange={(v) => setDefesa("baseCA", v)}
+              />
             </div>
             <div>
               <Label>Atributo</Label>
               <select
                 value={defesa.atributoDefesa}
-                onChange={(e) => setDefesa('atributoDefesa', e.target.value)}
+                onChange={(e) => setDefesa("atributoDefesa", e.target.value)}
                 className="w-full rounded border border-slate-600 bg-slate-900 px-2 py-1 text-sm text-white outline-none focus:border-accent-500"
               >
                 {ATRIBUTOS_LIST.map((a) => (
-                  <option key={a} value={a}>{a}</option>
+                  <option key={a} value={a}>
+                    {a}
+                  </option>
                 ))}
               </select>
             </div>
             <div>
               <Label>Mod Atributo</Label>
               <div className="flex h-[30px] items-center rounded bg-slate-700 px-2 text-sm text-slate-300">
-                {defesa.modAtributoDefesa >= 0 ? '+' : ''}{defesa.modAtributoDefesa}
+                {defesa.modAtributoDefesa >= 0 ? "+" : ""}
+                {defesa.modAtributoDefesa}
               </div>
             </div>
             <div>
               <Label>Armadura</Label>
-              <NumInput value={defesa.bonusArmadura} onChange={(v) => setDefesa('bonusArmadura', v)} />
+              <NumInput
+                value={defesa.bonusArmadura}
+                onChange={(v) => setDefesa("bonusArmadura", v)}
+              />
             </div>
             <div>
               <Label>Escudo</Label>
-              <NumInput value={defesa.bonusEscudo} onChange={(v) => setDefesa('bonusEscudo', v)} />
+              <NumInput
+                value={defesa.bonusEscudo}
+                onChange={(v) => setDefesa("bonusEscudo", v)}
+              />
             </div>
             <div>
               <Label>Outros</Label>
-              <NumInput value={defesa.outrosBonus} onChange={(v) => setDefesa('outrosBonus', v)} />
+              <NumInput
+                value={defesa.outrosBonus}
+                onChange={(v) => setDefesa("outrosBonus", v)}
+              />
             </div>
             <div>
               <Label>Penalidade</Label>
-              <NumInput value={defesa.penalidadeTotalArmadura} onChange={(v) => setDefesa('penalidadeTotalArmadura', v)} />
+              <NumInput
+                value={defesa.penalidadeTotalArmadura}
+                onChange={(v) => setDefesa("penalidadeTotalArmadura", v)}
+              />
             </div>
             <div>
               <Label>Total</Label>
@@ -468,19 +672,29 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
             <p className="text-xs text-slate-500">Nenhum ataque registrado.</p>
           )}
           {ataques.map((atk, i) => (
-            <div key={i} className="mb-3 rounded border border-slate-700 bg-slate-900/50 p-2">
+            <div
+              key={i}
+              className="mb-3 rounded border border-slate-700 bg-slate-900/50 p-2"
+            >
               <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                 <div>
                   <Label>Nome</Label>
-                  <TextInput value={atk.nome} onChange={(v) => setAtaque(i, 'nome', v)} />
+                  <TextInput
+                    value={atk.nome}
+                    onChange={(v) => setAtaque(i, "nome", v)}
+                  />
                 </div>
                 <div>
                   <Label>Teste Ataque</Label>
                   <div className="flex gap-1">
-                    <TextInput value={atk.bonusTesteAtaque} onChange={(v) => setAtaque(i, 'bonusTesteAtaque', v)} className="flex-1" />
+                    <TextInput
+                      value={atk.bonusTesteAtaque}
+                      onChange={(v) => setAtaque(i, "bonusTesteAtaque", v)}
+                      className="flex-1"
+                    />
                     <DiceButton
                       expression={buildAttackRollExpr(atk.bonusTesteAtaque)}
-                      label={`${atk.nome || 'Ataque'} - Teste`}
+                      label={`${atk.nome || "Ataque"} - Teste`}
                       size="sm"
                     />
                   </div>
@@ -488,11 +702,15 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
                 <div>
                   <Label>Dano</Label>
                   <div className="flex gap-1">
-                    <TextInput value={atk.dano} onChange={(v) => setAtaque(i, 'dano', v)} className="flex-1" />
+                    <TextInput
+                      value={atk.dano}
+                      onChange={(v) => setAtaque(i, "dano", v)}
+                      className="flex-1"
+                    />
                     {atk.dano && (
                       <DiceButton
                         expression={atk.dano}
-                        label={`${atk.nome || 'Ataque'} - Dano`}
+                        label={`${atk.nome || "Ataque"} - Dano`}
                         size="sm"
                       />
                     )}
@@ -500,15 +718,24 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
                 </div>
                 <div>
                   <Label>Crítico</Label>
-                  <TextInput value={atk.critico} onChange={(v) => setAtaque(i, 'critico', v)} />
+                  <TextInput
+                    value={atk.critico}
+                    onChange={(v) => setAtaque(i, "critico", v)}
+                  />
                 </div>
                 <div>
                   <Label>Tipo</Label>
-                  <TextInput value={atk.tipo} onChange={(v) => setAtaque(i, 'tipo', v)} />
+                  <TextInput
+                    value={atk.tipo}
+                    onChange={(v) => setAtaque(i, "tipo", v)}
+                  />
                 </div>
                 <div>
                   <Label>Alcance</Label>
-                  <TextInput value={atk.alcance} onChange={(v) => setAtaque(i, 'alcance', v)} />
+                  <TextInput
+                    value={atk.alcance}
+                    onChange={(v) => setAtaque(i, "alcance", v)}
+                  />
                 </div>
               </div>
               <button
@@ -519,7 +746,10 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
               </button>
             </div>
           ))}
-          <button onClick={addAtaque} className="text-xs font-medium text-accent-400 hover:text-accent-300">
+          <button
+            onClick={addAtaque}
+            className="text-xs font-medium text-accent-400 hover:text-accent-300"
+          >
             + Adicionar ataque
           </button>
         </SectionCard>
@@ -542,23 +772,41 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
               const p = pericias[nome];
               if (!p) return null;
               return (
-                <div key={nome} className="grid grid-cols-[1fr_auto_auto_auto_auto_auto] items-center gap-x-2 border-t border-slate-700/50 py-1">
-                  <span className="truncate text-xs text-slate-300">{nome}</span>
+                <div
+                  key={nome}
+                  className="grid grid-cols-[1fr_auto_auto_auto_auto_auto] items-center gap-x-2 border-t border-slate-700/50 py-1"
+                >
+                  <span className="truncate text-xs text-slate-300">
+                    {nome}
+                  </span>
                   <input
                     type="checkbox"
                     checked={p.treinado}
-                    onChange={(e) => setPericia(nome, 'treinado', e.target.checked)}
+                    onChange={(e) =>
+                      setPericia(nome, "treinado", e.target.checked)
+                    }
                     className="h-3.5 w-8"
                   />
-                  <span className="w-10 text-center text-xs text-slate-400">{p.atributo}</span>
+                  <span className="w-10 text-center text-xs text-slate-400">
+                    {p.atributo}
+                  </span>
                   <input
                     type="number"
                     value={p.outros}
-                    onChange={(e) => setPericia(nome, 'outros', e.target.value === '' ? 0 : Number(e.target.value))}
+                    onChange={(e) =>
+                      setPericia(
+                        nome,
+                        "outros",
+                        e.target.value === "" ? 0 : Number(e.target.value),
+                      )
+                    }
                     className="w-12 rounded border border-slate-600 bg-slate-900 px-1 py-0.5 text-center text-xs text-white outline-none focus:border-accent-500"
                   />
-                  <span className={`w-10 text-center text-xs font-semibold ${p.total >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
-                    {p.total >= 0 ? '+' : ''}{p.total}
+                  <span
+                    className={`w-10 text-center text-xs font-semibold ${p.total >= 0 ? "text-emerald-400" : "text-red-400"}`}
+                  >
+                    {p.total >= 0 ? "+" : ""}
+                    {p.total}
                   </span>
                   <DiceButton
                     expression={buildSkillCheckExpr(p.total)}
@@ -575,7 +823,10 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
           <div className="mb-2 grid grid-cols-3 gap-2 text-xs">
             <div>
               <Label>Carga Usada</Label>
-              <NumInput value={character.carga.usada} onChange={(v) => onDeep('carga.usada', v)} />
+              <NumInput
+                value={character.carga.usada}
+                onChange={(v) => onDeep("carga.usada", v)}
+              />
             </div>
             <div>
               <Label>Limite Carga</Label>
@@ -585,7 +836,11 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
             </div>
             <div>
               <Label>T$ (Dinheiro)</Label>
-              <NumInput value={character.dinheiro} onChange={(v) => onChange({ dinheiro: v })} min={0} />
+              <NumInput
+                value={character.dinheiro}
+                onChange={(v) => onChange({ dinheiro: v })}
+                min={0}
+              />
             </div>
           </div>
           {equipamento.itens.length > 0 && (
@@ -596,15 +851,18 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
             </div>
           )}
           {equipamento.itens.map((item, i) => (
-            <div key={i} className="mt-1.5 grid grid-cols-[1fr_3.5rem_1.5rem] gap-2 items-center">
+            <div
+              key={i}
+              className="mt-1.5 grid grid-cols-[1fr_3.5rem_1.5rem] gap-2 items-center"
+            >
               <TextInput
                 value={item.nome}
-                onChange={(v) => setItem(i, 'nome', v)}
+                onChange={(v) => setItem(i, "nome", v)}
                 placeholder="Item"
               />
               <NumInput
                 value={item.qtdSlots}
-                onChange={(v) => setItem(i, 'qtdSlots', v)}
+                onChange={(v) => setItem(i, "qtdSlots", v)}
                 min={0}
               />
               <button
@@ -615,7 +873,10 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
               </button>
             </div>
           ))}
-          <button onClick={addItem} className="mt-2 text-xs font-medium text-accent-400 hover:text-accent-300">
+          <button
+            onClick={addItem}
+            className="mt-2 text-xs font-medium text-accent-400 hover:text-accent-300"
+          >
             + Adicionar item
           </button>
         </SectionCard>
@@ -624,7 +885,9 @@ export default function FichaTab({ character, onChange, onDeep }: FichaTabProps)
         <SectionCard title="Proficiências e Características">
           <textarea
             value={character.proficienciasECaracteristicas}
-            onChange={(e) => onChange({ proficienciasECaracteristicas: e.target.value })}
+            onChange={(e) =>
+              onChange({ proficienciasECaracteristicas: e.target.value })
+            }
             rows={5}
             className="w-full resize-y rounded border border-slate-600 bg-slate-900 px-2 py-1.5 text-sm text-white placeholder-slate-500 outline-none focus:border-accent-500"
             placeholder="Proficiências com armas, armaduras, características de raça, classe..."
