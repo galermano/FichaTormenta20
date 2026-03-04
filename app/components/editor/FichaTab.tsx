@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { Character, AtributoEnum } from "@/app/lib/schema";
+import type { Character, AtributoEnum, PericiaValue } from "@/app/lib/schema";
 import {
   ATRIBUTOS_LIST,
   ATRIBUTO_NAMES,
@@ -253,6 +253,51 @@ export default function FichaTab({
 
   const setPericia = (nome: string, field: string, value: unknown) => {
     onDeep(`pericias.${nome}.${field}`, value);
+  };
+
+  const defaultPericiaNames = new Set(PERICIAS_DEFAULT.map((p) => p.nome));
+  const customPericias = Object.entries(pericias).filter(
+    ([nome]) => !defaultPericiaNames.has(nome),
+  );
+
+  const addPericia = () => {
+    const baseName = "Nova Perícia";
+    let name = baseName;
+    let counter = 1;
+    while (pericias[name]) {
+      counter++;
+      name = `${baseName} ${counter}`;
+    }
+    const newPericia: PericiaValue = {
+      treinado: false,
+      atributo: "DES",
+      modAtributo: 0,
+      outros: 0,
+      total: 0,
+    };
+    onChange({
+      pericias: { ...pericias, [name]: newPericia },
+    });
+  };
+
+  const removePericia = (nome: string) => {
+    const updated = { ...pericias };
+    delete updated[nome];
+    onChange({ pericias: updated });
+  };
+
+  const renamePericia = (oldName: string, newName: string) => {
+    if (!newName.trim() || newName === oldName) return;
+    if (pericias[newName]) return;
+    const updated: Record<string, PericiaValue> = {};
+    for (const [key, val] of Object.entries(pericias)) {
+      if (key === oldName) {
+        updated[newName] = val;
+      } else {
+        updated[key] = val;
+      }
+    }
+    onChange({ pericias: updated });
   };
 
   // Apply generated attributes
@@ -815,7 +860,90 @@ export default function FichaTab({
                 </div>
               );
             })}
+
+            {/* Custom Skills */}
+            {customPericias.length > 0 && (
+              <div className="mt-2 border-t-2 border-accent-500/30 pt-2">
+                <p className="mb-1 text-[10px] font-medium uppercase text-accent-400">
+                  Perícias Customizadas
+                </p>
+                {customPericias.map(([nome, p]) => (
+                  <div
+                    key={nome}
+                    className="grid grid-cols-[1fr_auto_auto_auto_auto_auto_auto] items-center gap-x-2 border-t border-slate-700/50 py-1"
+                  >
+                    <input
+                      type="text"
+                      defaultValue={nome}
+                      onBlur={(e) => renamePericia(nome, e.target.value.trim())}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                          (e.target as HTMLInputElement).blur();
+                        }
+                      }}
+                      className="w-full truncate rounded border border-slate-600 bg-slate-900 px-1 py-0.5 text-xs text-slate-300 outline-none focus:border-accent-500"
+                    />
+                    <input
+                      type="checkbox"
+                      checked={p.treinado}
+                      onChange={(e) =>
+                        setPericia(nome, "treinado", e.target.checked)
+                      }
+                      className="h-3.5 w-8"
+                    />
+                    <select
+                      value={p.atributo}
+                      onChange={(e) =>
+                        setPericia(nome, "atributo", e.target.value)
+                      }
+                      className="w-14 rounded border border-slate-600 bg-slate-900 px-0.5 py-0.5 text-center text-xs text-slate-400 outline-none focus:border-accent-500"
+                    >
+                      {ATRIBUTOS_LIST.map((a) => (
+                        <option key={a} value={a}>
+                          {a}
+                        </option>
+                      ))}
+                    </select>
+                    <input
+                      type="number"
+                      value={p.outros}
+                      onChange={(e) =>
+                        setPericia(
+                          nome,
+                          "outros",
+                          e.target.value === "" ? 0 : Number(e.target.value),
+                        )
+                      }
+                      className="w-12 rounded border border-slate-600 bg-slate-900 px-1 py-0.5 text-center text-xs text-white outline-none focus:border-accent-500"
+                    />
+                    <span
+                      className={`w-10 text-center text-xs font-semibold ${p.total >= 0 ? "text-emerald-400" : "text-red-400"}`}
+                    >
+                      {p.total >= 0 ? "+" : ""}
+                      {p.total}
+                    </span>
+                    <DiceButton
+                      expression={buildSkillCheckExpr(p.total)}
+                      label={nome}
+                    />
+                    <button
+                      onClick={() => removePericia(nome)}
+                      className="rounded px-1 text-xs text-red-400 hover:bg-red-400/10"
+                      title="Remover perícia"
+                    >
+                      &times;
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
+          <button
+            onClick={addPericia}
+            className="mt-2 text-xs font-medium text-accent-400 hover:text-accent-300"
+          >
+            + Adicionar perícia
+          </button>
         </SectionCard>
 
         {/* Equipment */}
