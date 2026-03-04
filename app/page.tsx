@@ -83,7 +83,7 @@ export default function HomePage() {
   if (!mounted) {
     return (
       <div className="flex min-h-[60vh] items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-amber-400 border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-accent-400 border-t-transparent" />
       </div>
     );
   }
@@ -116,12 +116,12 @@ export default function HomePage() {
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Buscar por nome, classe, raça..."
-              className="w-64 rounded-lg border border-slate-600 bg-slate-800 py-2 pl-9 pr-3 text-sm text-white placeholder-slate-500 outline-none transition-colors focus:border-amber-500 focus:ring-1 focus:ring-amber-500"
+              className="w-64 rounded-lg border border-slate-600 bg-slate-800 py-2 pl-9 pr-3 text-sm text-white placeholder-slate-500 outline-none transition-colors focus:border-accent-500 focus:ring-1 focus:ring-accent-500"
             />
           </div>
           <button
             onClick={() => fileInputRef.current?.click()}
-            className="rounded-lg border border-slate-600 bg-slate-800 px-3 py-2 text-sm font-medium text-slate-300 transition-colors hover:border-amber-500 hover:text-amber-400"
+            className="rounded-lg border border-slate-600 bg-slate-800 px-3 py-2 text-sm font-medium text-slate-300 transition-colors hover:border-accent-500 hover:text-accent-400"
             title="Importar JSON"
           >
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -146,7 +146,7 @@ export default function HomePage() {
             onClick={() => setFilter(f.key)}
             className={`rounded-full px-3.5 py-1 text-xs font-semibold transition-colors ${
               filter === f.key
-                ? 'bg-amber-500 text-slate-900'
+                ? 'bg-accent-500 text-slate-900'
                 : 'bg-slate-700/80 text-slate-300 hover:bg-slate-600'
             }`}
           >

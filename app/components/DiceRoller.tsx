@@ -54,7 +54,7 @@ function RollResultCard({ result }: { result: DiceRollResult }) {
     <div
       className={`rounded-lg border p-2.5 transition-colors ${
         isCrit
-          ? 'border-amber-500/60 bg-amber-500/10'
+          ? 'border-accent-500/60 bg-accent-500/10'
           : isFumble
             ? 'border-red-500/60 bg-red-500/10'
             : 'border-slate-700 bg-slate-800/80'
@@ -68,12 +68,12 @@ function RollResultCard({ result }: { result: DiceRollResult }) {
           <div className="flex items-baseline gap-2">
             <span
               className={`text-xl font-extrabold ${
-                isCrit ? 'text-amber-400' : isFumble ? 'text-red-400' : 'text-white'
+                isCrit ? 'text-accent-400' : isFumble ? 'text-red-400' : 'text-white'
               }`}
             >
               {result.total}
             </span>
-            {isCrit && <span className="text-[10px] font-bold uppercase text-amber-400">Crítico!</span>}
+            {isCrit && <span className="text-[10px] font-bold uppercase text-accent-400">Crítico!</span>}
             {isFumble && <span className="text-[10px] font-bold uppercase text-red-400">Falha Crítica!</span>}
           </div>
         </div>
@@ -92,7 +92,7 @@ function RollResultCard({ result }: { result: DiceRollResult }) {
                 isDropped
                   ? 'bg-slate-700 text-slate-500 line-through'
                   : isMax
-                    ? 'bg-amber-500/25 text-amber-300'
+                    ? 'bg-accent-500/25 text-accent-300'
                     : isMin
                       ? 'bg-red-500/25 text-red-300'
                       : 'bg-slate-700 text-slate-300'
@@ -155,7 +155,7 @@ export default function DiceRoller({ open, onClose }: DiceRollerProps) {
       {/* Header */}
       <div className="flex items-center justify-between border-b border-slate-700 px-4 py-3">
         <div className="flex items-center gap-2">
-          <DiceIcon className="h-5 w-5 text-amber-400" />
+          <DiceIcon className="h-5 w-5 text-accent-400" />
           <h2 className="text-sm font-bold text-white">Rolagem de Dados</h2>
         </div>
         <button
@@ -177,19 +177,19 @@ export default function DiceRoller({ open, onClose }: DiceRollerProps) {
               value={customExpr}
               onChange={(e) => setCustomExpr(e.target.value)}
               placeholder="Ex: 2d6+3, 1d20+5, 4d8-2"
-              className="w-full rounded border border-slate-600 bg-slate-800 px-2.5 py-1.5 text-sm text-white placeholder-slate-500 outline-none focus:border-amber-500"
+              className="w-full rounded border border-slate-600 bg-slate-800 px-2.5 py-1.5 text-sm text-white placeholder-slate-500 outline-none focus:border-accent-500"
             />
             <input
               type="text"
               value={customLabel}
               onChange={(e) => setCustomLabel(e.target.value)}
               placeholder="Descrição (opcional)"
-              className="w-full rounded border border-slate-600 bg-slate-800 px-2.5 py-1 text-xs text-white placeholder-slate-500 outline-none focus:border-amber-500"
+              className="w-full rounded border border-slate-600 bg-slate-800 px-2.5 py-1 text-xs text-white placeholder-slate-500 outline-none focus:border-accent-500"
             />
           </div>
           <button
             type="submit"
-            className="self-start rounded-lg bg-amber-600 px-3 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-amber-500"
+            className="self-start rounded-lg bg-accent-600 px-3 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-accent-500"
           >
             Rolar
           </button>
@@ -204,7 +204,7 @@ export default function DiceRoller({ open, onClose }: DiceRollerProps) {
             onClick={() => setCategory(cat.key)}
             className={`flex-1 py-2 text-xs font-semibold transition-colors ${
               category === cat.key
-                ? 'border-b-2 border-amber-400 text-amber-400'
+                ? 'border-b-2 border-accent-400 text-accent-400'
                 : 'text-slate-400 hover:text-slate-200'
             }`}
           >
@@ -220,7 +220,7 @@ export default function DiceRoller({ open, onClose }: DiceRollerProps) {
             key={qr.label + qr.expression}
             onClick={() => doRoll(qr.expression, qr.description)}
             title={qr.description}
-            className="rounded-lg border border-slate-600 bg-slate-800 px-2.5 py-1.5 text-xs font-semibold text-slate-200 transition-colors hover:border-amber-500 hover:text-amber-400"
+            className="rounded-lg border border-slate-600 bg-slate-800 px-2.5 py-1.5 text-xs font-semibold text-slate-200 transition-colors hover:border-accent-500 hover:text-accent-400"
           >
             {qr.label}
           </button>
@@ -270,7 +270,7 @@ export function DiceRollerToggle({ onClick, hasNew }: { onClick: () => void; has
   return (
     <button
       onClick={onClick}
-      className="fixed bottom-6 right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-amber-600 text-white shadow-lg shadow-amber-600/30 transition-all hover:bg-amber-500 hover:scale-105 active:scale-95"
+      className="fixed bottom-6 right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-accent-600 text-white shadow-lg shadow-accent-600/30 transition-all hover:bg-accent-500 hover:scale-105 active:scale-95"
       title="Rolar Dados"
     >
       <DiceIcon className="h-7 w-7" />

@@ -42,7 +42,7 @@ export default function CharacterCard({ character }: { character: Character }) {
   return (
     <Link
       href={`/characters/${character.id}`}
-      className="group flex flex-col overflow-hidden rounded-xl border-2 border-slate-700 bg-slate-800 transition-all hover:border-amber-500/60 hover:shadow-lg hover:shadow-amber-500/10"
+      className="group flex flex-col overflow-hidden rounded-xl border-2 border-slate-700 bg-slate-800 transition-all hover:border-accent-500/60 hover:shadow-lg hover:shadow-accent-500/10"
     >
       {/* Avatar area */}
       <div className={`relative flex h-32 items-center justify-center bg-gradient-to-br ${colorForId(character.id)}`}>
@@ -64,7 +64,7 @@ export default function CharacterCard({ character }: { character: Character }) {
       </div>
       {/* Info */}
       <div className="flex flex-1 flex-col gap-1.5 p-3">
-        <h3 className="truncate text-base font-bold text-white group-hover:text-amber-400 transition-colors">
+        <h3 className="truncate text-base font-bold text-white group-hover:text-accent-400 transition-colors">
           {nome}
         </h3>
         <p className="truncate text-xs text-slate-400">{getClasseLabel(character)}</p>
@@ -74,7 +74,7 @@ export default function CharacterCard({ character }: { character: Character }) {
               {character.personagem.raca}
             </span>
           )}
-          <span className="rounded-full bg-amber-500/20 px-2 py-0.5 text-[10px] font-semibold text-amber-400">
+          <span className="rounded-full bg-accent-500/20 px-2 py-0.5 text-[10px] font-semibold text-accent-400">
             Nível {nivel}
           </span>
           {character.personagem.origem && (
@@ -92,14 +92,14 @@ export function NewCharacterCard({ onClick }: { onClick: () => void }) {
   return (
     <button
       onClick={onClick}
-      className="group flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-slate-600 bg-slate-800/50 p-6 transition-all hover:border-amber-500 hover:bg-slate-800"
+      className="group flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-slate-600 bg-slate-800/50 p-6 transition-all hover:border-accent-500 hover:bg-slate-800"
     >
-      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-amber-500/20 text-amber-400 transition-colors group-hover:bg-amber-500/30">
+      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-accent-500/20 text-accent-400 transition-colors group-hover:bg-accent-500/30">
         <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
         </svg>
       </div>
-      <span className="text-sm font-semibold text-slate-300 group-hover:text-amber-400 transition-colors">
+      <span className="text-sm font-semibold text-slate-300 group-hover:text-accent-400 transition-colors">
         Novo Personagem
       </span>
     </button>

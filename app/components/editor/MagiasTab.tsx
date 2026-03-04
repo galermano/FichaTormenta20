@@ -31,7 +31,7 @@ function TextInput({
       value={value}
       onChange={(e) => onChange(e.target.value)}
       placeholder={placeholder}
-      className={`w-full rounded border border-slate-600 bg-slate-900 px-2 py-1.5 text-sm text-white placeholder-slate-500 outline-none focus:border-amber-500 ${className}`}
+      className={`w-full rounded border border-slate-600 bg-slate-900 px-2 py-1.5 text-sm text-white placeholder-slate-500 outline-none focus:border-accent-500 ${className}`}
     />
   );
 }
@@ -68,7 +68,7 @@ export default function MagiasTab({ character, onChange, onDeep }: MagiasTabProp
             <select
               value={magia.atributoChave}
               onChange={(e) => onDeep('magia.atributoChave', e.target.value as AtributoEnum)}
-              className="w-full rounded border border-slate-600 bg-slate-900 px-2 py-1.5 text-sm text-white outline-none focus:border-amber-500"
+              className="w-full rounded border border-slate-600 bg-slate-900 px-2 py-1.5 text-sm text-white outline-none focus:border-accent-500"
             >
               {ATRIBUTOS_LIST.map((a) => (
                 <option key={a} value={a}>{a}</option>
@@ -83,7 +83,7 @@ export default function MagiasTab({ character, onChange, onDeep }: MagiasTabProp
           </div>
           <div>
             <Label>CD Resistência</Label>
-            <div className="flex h-[34px] items-center justify-center rounded bg-amber-500/20 text-lg font-bold text-amber-400">
+            <div className="flex h-[34px] items-center justify-center rounded bg-accent-500/20 text-lg font-bold text-accent-400">
               {character.testeResistenciaMagia}
             </div>
           </div>
@@ -133,7 +133,7 @@ export default function MagiasTab({ character, onChange, onDeep }: MagiasTabProp
                 value={m.efeito}
                 onChange={(e) => setMagia(i, 'efeito', e.target.value)}
                 rows={2}
-                className="w-full resize-y rounded border border-slate-600 bg-slate-900 px-2 py-1.5 text-sm text-white placeholder-slate-500 outline-none focus:border-amber-500"
+                className="w-full resize-y rounded border border-slate-600 bg-slate-900 px-2 py-1.5 text-sm text-white placeholder-slate-500 outline-none focus:border-accent-500"
                 placeholder="Descrição do efeito..."
               />
             </div>
@@ -145,7 +145,7 @@ export default function MagiasTab({ character, onChange, onDeep }: MagiasTabProp
             </button>
           </div>
         ))}
-        <button onClick={addMagia} className="text-xs font-medium text-amber-400 hover:text-amber-300">
+        <button onClick={addMagia} className="text-xs font-medium text-accent-400 hover:text-accent-300">
           + Adicionar magia
         </button>
       </SectionCard>
